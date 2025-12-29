@@ -2,205 +2,218 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NEXUS | Admin Master</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura | Intelligence</title>
     <style>
-        :root { --primary: #2563eb; --danger: #ef4444; --bg: #f8fafc; --radius: 16px; }
-        body { margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); overflow-x: hidden; }
-        
-        /* HEADER */
-        nav { background: white; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; position: sticky; top:0; z-index: 100; }
-        
-        /* CARDS */
-        .container { padding: 15px; max-width: 600px; margin: 0 auto; }
-        .card { background: white; border-radius: var(--radius); margin-bottom: 20px; border: 1px solid #e2e8f0; box-shadow: 0 4px 15px rgba(0,0,0,0.03); overflow: hidden; }
-        .card-top { padding: 18px; }
-        .status-pill { font-size: 0.65rem; font-weight: 800; padding: 2px 8px; border-radius: 50px; }
-        .online { background: #dcfce7; color: #15803d; }
-        .offline { background: #f1f5f9; color: #64748b; }
+        :root {
+            --bg: #ffffff;
+            --text: #1d1d1f;
+            --subtext: #86868b;
+            --accent: #0071e3;
+            --search-bg: #f5f5f7;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
 
-        /* SPLIT ACTION */
-        .card-footer { display: flex; border-top: 1px solid #f1f5f9; }
-        .btn-foot { flex: 1; padding: 14px; border: none; font-weight: 700; cursor: pointer; font-size: 0.8rem; }
-        .btn-hire { background: var(--primary); color: white; }
-        .btn-rev { background: #f8fafc; color: #64748b; border-left: 1px solid #f1f5f9; }
+        body {
+            margin: 0;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
 
-        /* MODALS */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .modal { background: white; padding: 25px; border-radius: 24px; width: 100%; max-width: 400px; max-height: 85vh; overflow-y: auto; }
-        .hidden { display: none !important; }
-        
-        /* ADMIN CONTROLS */
-        .admin-item { background: #f1f5f9; margin-bottom: 10px; padding: 10px; border-radius: 10px; font-size: 0.8rem; display: flex; justify-content: space-between; align-items: center; }
-        
-        /* JUMP SCARE / GLOBAL MSG */
-        #globalMsg { position: fixed; top: 20%; left: 0; width: 100%; text-align: center; background: rgba(239, 68, 68, 0.9); color: white; padding: 20px; font-weight: 900; z-index: 9999; transform: scale(0); transition: 0.3s; }
-        #jumpScare { position: fixed; inset: 0; background: url('https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3N2eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/14ut8o6O9cmE0/giphy.gif') center no-repeat; background-size: cover; z-index: 10000; display: none; }
+        /* Top Navigation Mockup */
+        nav {
+            width: 100%;
+            padding: 20px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 20px;
+            box-sizing: border-box;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text);
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        /* Main Search Section */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 90%;
+            max-width: 600px;
+            margin-top: -10vh;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+
+        .logo-text {
+            font-size: 48px;
+            font-weight: 700;
+            letter-spacing: -1.5px;
+            background: linear-gradient(180deg, #1d1d1f 0%, #434343 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* The Search Bar */
+        .search-wrapper {
+            position: relative;
+            width: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 18px 25px 18px 55px;
+            font-size: 18px;
+            border-radius: 30px;
+            border: 1px solid transparent;
+            background-color: var(--search-bg);
+            color: var(--text);
+            outline: none;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: inset 0 0 0 1px rgba(0,0,0,0.02);
+        }
+
+        .search-bar:focus {
+            background-color: #fff;
+            border-color: #d2d2d7;
+            box-shadow: var(--shadow);
+        }
+
+        /* SVG Icons */
+        .icon-search {
+            position: absolute;
+            left: 20px;
+            width: 20px;
+            height: 20px;
+            fill: var(--subtext);
+        }
+
+        .icon-mic {
+            position: absolute;
+            right: 20px;
+            width: 20px;
+            height: 20px;
+            fill: var(--accent);
+            cursor: pointer;
+        }
+
+        /* UI Buttons */
+        .button-group {
+            margin-top: 30px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            border-radius: 20px;
+            border: none;
+            background-color: var(--search-bg);
+            color: var(--text);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn:hover {
+            background-color: #e8e8ed;
+        }
+
+        /* Footer */
+        footer {
+            padding: 20px;
+            color: var(--subtext);
+            font-size: 12px;
+            width: 100%;
+            text-align: center;
+            border-top: 1px solid #f2f2f2;
+        }
     </style>
 </head>
 <body>
 
-    <div id="jumpScare"></div>
-    <div id="globalMsg">ADMIN MESSAGE: <br><span id="msgContent"></span></div>
-
     <nav>
-        <div id="logo" style="font-weight: 900; color: var(--primary); font-size: 1.3rem; cursor: pointer;" onclick="adminTap()">NEXUS</div>
-        <div id="userTag" style="font-weight: 700; font-size: 0.7rem;">Loading...</div>
+        <a href="#">Images</a>
+        <a href="#">Maps</a>
+        <svg height="24" viewBox="0 0 24 24" width="24"><path d="M6,8c1.1,0,2-0.9,2-2s-0.9-2-2-2S4,4.9,4,6S4.9,8,6,8z M12,20c1.1,0,2-0.9,2-2s-0.9-2-2-2s-0.9,2-2,2S10.9,20,12,20z M6,20 c1.1,0,2-0.9,2-2s-0.9-2-2-2s-0.9,2-2,2S4.9,20,6,20z M6,14c1.1,0,2-0.9,2-2s-0.9-2-2-2s-0.9,2-2,2S4.9,14,6,14z M12,14 c1.1,0,2-0.9,2-2s-0.9-2-2-2s-0.9,2-2,2S10.9,14,12,14z M18,8c1.1,0,2-0.9,2-2s-0.9-2-2-2s-2,0.9-2,2S16.9,8,18,8z M12,8 c1.1,0,2-0.9,2-2s-0.9-2-2-2s-2,0.9-2,2S10.9,8,12,8z M18,14c1.1,0,2-0.9,2-2s-0.9-2-2-2s-2,0.9-2,2S16.9,14,18,14z M18,20 c1.1,0,2-0.9,2-2s-0.9-2-2-2s-2,0.9-2,2S16.9,20,18,20z" fill="#5f6368"/></svg>
     </nav>
 
-    <div class="container">
-        <button class="btn-foot btn-hire" style="width:100%; border-radius:12px; margin-bottom:20px;" onclick="openModal('sellerModal')">+ CREATE OFFER</button>
-        <div id="marketGrid"></div>
-    </div>
+    <div class="main">
+        <div class="logo">
+            <svg width="50" height="50" viewBox="0 0 100 100">
+                <defs>
+                    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#0071e3;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#00d4ff;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <circle cx="50" cy="50" r="40" stroke="url(#grad)" stroke-width="8" fill="none" />
+                <circle cx="50" cy="50" r="15" fill="url(#grad)" />
+            </svg>
+            <span class="logo-text">Aura</span>
+        </div>
 
-    <div id="adminModal" class="modal-overlay hidden">
-        <div class="modal">
-            <h2 style="color:var(--danger); margin-top:0;">OWNER CONSOLE</h2>
-            <div style="margin-bottom:20px;">
-                <input type="text" id="admMsg" placeholder="Write Text on Screen..." style="width:70%; padding:10px;">
-                <button onclick="sendGlobalMsg()" style="padding:10px;">Send</button>
-            </div>
-            <div id="adminUserList"></div>
-            <button class="btn-foot btn-rev" style="width:100%; margin-top:10px;" onclick="closeModal('adminModal')">Exit Console</button>
+        <div class="search-wrapper">
+            <svg class="icon-search" viewBox="0 0 24 24">
+                <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+            
+            <input type="text" id="mainSearch" class="search-bar" placeholder="Search the universal web..." autofocus>
+            
+            <svg class="icon-mic" viewBox="0 0 24 24">
+                <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+            </svg>
+        </div>
+
+        <div class="button-group">
+            <button class="btn" onclick="executeSearch()">Aura Search</button>
+            <button class="btn" onclick="window.location.reload()">Reset Engine</button>
         </div>
     </div>
 
-    <div id="payModal" class="modal-overlay hidden">
-        <div class="modal" style="text-align: center;">
-            <div id="qrArea"></div>
-            <h3 id="payTitle"></h3>
-            <button class="btn-foot btn-hire" style="width:100%; border-radius:10px;" onclick="closeModal('payModal')">I Paid / Close</button>
-        </div>
-    </div>
-
-    <div id="sellerModal" class="modal-overlay hidden">
-        <div class="modal">
-            <h3>New Service</h3>
-            <select id="regGame"><option value="Free Fire">Free Fire</option><option value="PUBG">PUBG</option><option value="Roblox">Roblox</option></select>
-            <input type="number" id="regPrice" placeholder="Price ₹">
-            <input type="text" id="regUPI" placeholder="UPI ID">
-            <button class="btn-foot btn-hire" style="width:100%; border-radius:10px;" onclick="createOffer()">Post</button>
-        </div>
-    </div>
+    <footer>
+        United States &bull; Privacy &bull; Terms &bull; Settings
+    </footer>
 
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyDQdp3EpE3XhmadNl5O-jDFO6rR-DJajm4",
-            authDomain: "nexus-market-174ea.firebaseapp.com",
-            projectId: "nexus-market-174ea",
-            storageBucket: "nexus-market-174ea.firebasestorage.app",
-            messagingSenderId: "884429922908",
-            appId: "1:884429922908:web:e7119709ea4bf379297c99"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
+        const input = document.getElementById('mainSearch');
 
-        let currentUser = localStorage.getItem('nexus_user') || prompt("Enter Name:");
-        if(currentUser) { localStorage.setItem('nexus_user', currentUser); document.getElementById('userTag').innerText = currentUser; }
-
-        let clicks = 0;
-        function adminTap() {
-            clicks++;
-            setTimeout(() => clicks = 0, 1000);
-            if(clicks === 2) {
-                const p = prompt("Secret Key:");
-                if(p === "nexus789") openModal('adminModal'), loadAdminUsers();
+        // Logic to make it a "Real" search engine
+        function executeSearch() {
+            const query = input.value;
+            if (query.trim() !== "") {
+                // This routes your clean UI to a real global index 
+                // without the "trash" feel of a local list.
+                window.location.href = `https://www.bing.com/search?q=${encodeURIComponent(query)}`;
             }
         }
 
-        // --- CORE MARKET ---
-        db.collection("sellers").orderBy("timestamp", "desc").onSnapshot(snap => {
-            const grid = document.getElementById('marketGrid');
-            grid.innerHTML = '';
-            snap.forEach(doc => {
-                const s = doc.data();
-                const isMe = s.name === currentUser;
-                grid.innerHTML += `
-                    <div class="card">
-                        <div class="card-top">
-                            <div style="display:flex; justify-content:space-between;">
-                                <strong>${s.name} ${s.verified ? '🔵' : ''}</strong>
-                                <span class="status-pill ${s.status}">${s.status}</span>
-                            </div>
-                            <div style="font-size:1.3rem; font-weight:800; margin:10px 0;">₹${s.price}</div>
-                            <small>${s.game}</small>
-                        </div>
-                        <div class="card-footer">
-                            ${isMe ? `<button class="btn-foot btn-rev" style="color:red" onclick="db.collection('sellers').doc('${doc.id}').delete()">DELETE</button>` : 
-                                     `<button class="btn-foot btn-hire" onclick="openPay('${s.upi}', '${s.price}', '${s.name}')">HIRE</button>
-                                      <button class="btn-foot btn-rev">REVIEW</button>`}
-                        </div>
-                    </div>`;
-            });
-        });
-
-        // --- ADMIN SYSTEMS ---
-        function loadAdminUsers() {
-            db.collection("sellers").onSnapshot(snap => {
-                const list = document.getElementById('adminUserList');
-                list.innerHTML = '';
-                snap.forEach(doc => {
-                    const s = doc.data();
-                    list.innerHTML += `<div class="admin-item">
-                        <span>${s.name}</span>
-                        <div>
-                            <button onclick="triggerJump('${s.name}')">😱</button>
-                            <button onclick="db.collection('sellers').doc('${doc.id}').update({verified: true})">🔵</button>
-                            <button onclick="db.collection('sellers').doc('${doc.id}').delete()">🗑️</button>
-                        </div>
-                    </div>`;
-                });
-            });
-        }
-
-        // --- REAL TIME LISTENERS (For Ban / JumpScare / Msg) ---
-        db.collection("commands").doc("global").onSnapshot(doc => {
-            const data = doc.data();
-            if(data && data.msg) {
-                const box = document.getElementById('globalMsg');
-                document.getElementById('msgContent').innerText = data.msg;
-                box.style.transform = "scale(1)";
-                setTimeout(() => box.style.transform = "scale(0)", 5000);
+        // Search on 'Enter' key
+        input.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                executeSearch();
             }
         });
-
-        db.collection("commands").doc(currentUser).onSnapshot(doc => {
-            if(doc.exists && doc.data().jump) {
-                const j = document.getElementById('jumpScare');
-                j.style.display = 'block';
-                setTimeout(() => { j.style.display = 'none'; db.collection("commands").doc(currentUser).delete(); }, 2000);
-            }
-        });
-
-        // --- ACTIONS ---
-        function sendGlobalMsg() { db.collection("commands").doc("global").set({ msg: document.getElementById('admMsg').value }); }
-        function triggerJump(name) { db.collection("commands").doc(name).set({ jump: true }); }
-        
-        function openPay(upi, amt, name) {
-            const link = `upi://pay?pa=${upi}&pn=${name}&am=${amt}&cu=INR`;
-            document.getElementById('qrArea').innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(link)}">`;
-            document.getElementById('payTitle').innerText = `Pay ₹${amt}`;
-            openModal('payModal');
-        }
-
-        function createOffer() {
-            db.collection("sellers").add({
-                name: currentUser, price: document.getElementById('regPrice').value,
-                upi: document.getElementById('regUPI').value, game: document.getElementById('regGame').value,
-                status: 'online', verified: false, timestamp: Date.now()
-            });
-            closeModal('sellerModal');
-        }
-
-        function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
-        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
     </script>
 </body>
-</html>
+                                                            </html>
